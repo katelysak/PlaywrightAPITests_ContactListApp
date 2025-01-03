@@ -1,0 +1,13 @@
+{
+    "firstName": "Amy",
+    "lastName": "Miller",
+    "birthdate": "1992-02-02",
+    "email": "amiller@fake.com",
+    "phone": "8005554242",
+    "street1": "13 School St.",
+    "street2": "Apt. 5",
+    "city": "Washington",
+    "stateProvince": "QC",
+    "postalCode": "A1A1A1",
+    "country": "Canada"
+}

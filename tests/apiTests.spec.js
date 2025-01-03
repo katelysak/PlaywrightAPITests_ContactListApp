@@ -1,27 +1,37 @@
 const { test, expect } = require('playwright/test')
 import { faker } from '@faker-js/faker'
+const loginAPIRequestBody = require('../test-data/login.json')
 
 test('Login to app', async({ request }) => {
 
-    const loginAPIRequestBody = require('../test-data/post_login.json')
+    // const loginAPIRequestBody = require('../test-data/post_login.json')
 
-    const postAPIResponse = await request.post(`/users/login`, {
+    const loginResponse = await request.post(`/users/login`, {
         data: loginAPIRequestBody
     })
 
-    expect(postAPIResponse.ok()).toBeTruthy();
-    expect(postAPIResponse.status()).toBe(200);
+    expect(loginResponse.ok()).toBeTruthy();
+    expect(loginResponse.status()).toBe(200);
 
-    const postAPIResponseBody = await postAPIResponse.json();
-    console.log(postAPIResponseBody);
+    const loginAPIResponseBody = await loginResponse.json();
+    const tokenResponse = await loginAPIResponseBody.token;
+    console.log("Token No is: "+tokenResponse);
 
-    expect(postAPIResponseBody.user).toHaveProperty('firstName', 'Anna');
-    expect(postAPIResponseBody.user).toHaveProperty('lastName', 'Smith');
+    console.log(loginAPIResponseBody);
+
+    expect(loginAPIResponseBody.user).toHaveProperty('firstName', 'Anna');
+    expect(loginAPIResponseBody.user).toHaveProperty('lastName', 'Smith');
 })
 
 test('Get all contacts', async({ request }) => {
 
-    const getAPIResponse = await request.get(`/contacts/`)
+    const getAPIResponse = await request.get(`/contacts/`, {
+        headers: {
+            "Content-Type": "application/json",
+            "Cookie": `token=`
+        }
+    }
+    )
 
     console.log(await getAPIResponse.json())
 
@@ -29,6 +39,18 @@ test('Get all contacts', async({ request }) => {
     expect(getAPIResponse.status()).toBe('200');
 })
 
+test('Create contact', async({ request }) => {
+
+})
+
 test('Update contact', async({ request }) => {
+
+})
+
+test('Delete contact', async({ request }) => {
+
+})
+
+test('Log out', async({ request }) => {
 
 })
