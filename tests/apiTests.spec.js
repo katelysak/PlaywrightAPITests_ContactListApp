@@ -1,12 +1,12 @@
 const { test, expect } = require('playwright/test')
+import { faker } from '@faker-js/faker'
 
 test('Login to app', async({ request }) => {
 
+    const loginAPIRequestBody = require('../test-data/post_login.json')
+
     const postAPIResponse = await request.post(`/users/login`, {
-        data:{
-                "email": "anna_smith@gmail.com",
-                "password": "Password12345!"
-            }
+        data: loginAPIRequestBody
     })
 
     expect(postAPIResponse.ok()).toBeTruthy();
@@ -14,6 +14,9 @@ test('Login to app', async({ request }) => {
 
     const postAPIResponseBody = await postAPIResponse.json();
     console.log(postAPIResponseBody);
+
+    expect(postAPIResponseBody.user).toHaveProperty('firstName', 'Anna');
+    expect(postAPIResponseBody.user).toHaveProperty('lastName', 'Smith');
 })
 
 test('Get all contacts', async({ request }) => {
